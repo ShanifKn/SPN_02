@@ -1,32 +1,64 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { inviteAgent } from "../../api/admin/adminApi";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 const AddAgent = () => {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState("");
+  const [msg, setMsg] = useState("");
 
-  const handleInvite = async () => {
+  const handleInvite = async (event) => {
+    event.preventDefault();
     if (email === "" || name === "") {
       setError("All fileds are required !");
+      return false;
     }
-
     const form = new FormData();
     form.append("email", email);
     form.append("name", name);
 
+    // * SEND REQUEST *//
     const response = await inviteAgent(form);
-    console.log(response);
+
+    const status = response.status;
+
+    if (status === 200) {
+      setMsg(response.data.msg);
+      setEmail();
+      setTimeout(() => {
+        setMsg();
+      }, 2000);
+    }
+    if (status === 404) setError(response.data.msg);
+    if (status === 500) navigate("/404");
   };
 
   return (
     <>
+      {msg && (
+        <div className="flex w-full float-right mt-10 max-w-sm overflow-hidden bg-white rounded-lg shadow-md ">
+          <div className="flex items-center justify-center w-12 bg-emerald-500">
+            <CheckCircleOutlineIcon className="w-6 h-6 text-white fill-current" />
+          </div>
+
+          <div className="px-4 py-2 -mx-3">
+            <div className="mx-3">
+              <span className="font-semibold text-emerald-500 ">Success</span>
+              <p className="text-sm text-gray-600 ">{msg}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       <section className="text-gray-600 body-font">
         <div className="container px-5 py-24 mx-auto">
           <div className="flex flex-col text-center w-full mb-12">
             {error && (
-              <div class="rounded border-l-4 border-red-500 bg-red-50 p-4 w-56 mb-10 ">
-                <strong class="block font-medium text-red-800  ">
+              <div className="rounded border-l-4 border-red-500 bg-red-50 p-4 w-56 mb-10 ">
+                <strong className="block font-medium text-red-800  ">
                   {error}
                 </strong>
               </div>

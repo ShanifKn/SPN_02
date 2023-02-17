@@ -1,10 +1,14 @@
 import React from "react";
-import Signup from "../../../components/agent/Signup";
+import SignUp from "../../../components/agent/Signup";
+import SignupHeader from "../../../components/agent/SignupHeader";
 
-export const AgentSignup = () => {
+const AgentSignup = () => {
   return (
     <>
-      <Signup />
+      <SignupHeader />
+      <SignUp />
     </>
   );
 };
+
+export default AgentSignup;

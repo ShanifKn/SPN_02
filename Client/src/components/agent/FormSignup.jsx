@@ -5,7 +5,7 @@ import { agentLogin } from "../../api/agent/agnetApi";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../Redux/Slice/userSlice";
 
-const FormSignup = () => {
+const FormSignin = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [error, setError] = useState();
@@ -127,4 +127,4 @@ const FormSignup = () => {
   );
 };
 
-export default FormSignup;
+export default FormSignin;

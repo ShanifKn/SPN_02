@@ -15,9 +15,11 @@ export const login = async (email, password) => {
 export const inviteAgent = async (Data) => {
   try {
     const response = await axios.post(`/admin/invite`, Data);
-    const data = response.data;
-    return data;
+    return response;
   } catch (error) {
-    console.log(error);
+    return error.response;
   }
 };
+
+
+//* 
