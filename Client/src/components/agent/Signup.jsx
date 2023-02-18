@@ -15,7 +15,6 @@ const SignUp = () => {
     phone: "",
     password: "",
     address: "",
-    phone: "",
     city: "",
     picture: "",
   });
@@ -28,7 +27,6 @@ const SignUp = () => {
   };
 
   const handleInput = (event) => {
-    console.log(event.target.value);
     setFormData({
       ...formData,
       [event.target.name]: event.target.value,
@@ -68,15 +66,12 @@ const SignUp = () => {
           </div>
         )}
 
-        <form
-          className="container flex flex-col mx-auto space-y-5 "
-          onSubmit={handleSubmit}>
+        <form className="container flex flex-col mx-auto space-y-5 " onSubmit={handleSubmit}>
           <fieldset className="grid grid-cols-4 gap-6 p-6 rounded-md shadow-sm ">
             <div className="space-y-2 col-span-full lg:col-span-1">
               <p className="font-medium">Personal Inormation</p>
               <p className="text-xs text-gray-500">
-                Agent must submit validate prove .The agent must comply with the
-                rules and guidelines that have been set by the our tickety.
+                Agent must submit validate prove .The agent must comply with the rules and guidelines that have been set by the our tickety.
               </p>
             </div>
             <div className="grid grid-cols-6 gap-4 col-span-full lg:col-span-3">
@@ -159,28 +154,13 @@ const SignUp = () => {
               </div>
               <div className="col-span-full sm:col-span-4">
                 <fieldset className="w-full space-y-1 ">
-                  <label className="block text-lg font-medium">
-                    Attachments
-                  </label>
+                  <label className="block text-lg font-medium">Attachments</label>
                   <div className="flex">
-                    <input
-                      type="file"
-                      name="image"
-                      onChange={handleImg}
-                      className="px-8 py-12 border-4 border-dashed rounded-md "
-                    />
+                    <input type="file" name="image" onChange={handleImg} className="px-8 py-12 border-4 border-dashed rounded-md " />
                   </div>
                 </fieldset>
               </div>
-              {preview && (
-                <img
-                  src={preview}
-                  alt=""
-                  width="100px"
-                  height="100px"
-                  className="mt-10"
-                />
-              )}
+              {preview && <img src={preview} alt="" width="100px" height="100px" className="mt-10" />}
             </div>
           </fieldset>
           <div className="flex justify-center">

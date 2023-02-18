@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { inviteAgent } from "../../api/admin/adminApi";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import { useSelector } from "react-redux";
+import { Password } from "@mui/icons-material";
+import { validatefrom } from "../../api/agent/formValidation";
 
 const AddAgent = () => {
   const navigate = useNavigate();
@@ -9,25 +12,25 @@ const AddAgent = () => {
   const [name, setName] = useState("");
   const [error, setError] = useState("");
   const [msg, setMsg] = useState("");
+  const token = useSelector((state) => state.admin.token);
 
   const handleInvite = async (event) => {
     event.preventDefault();
-    if (email === "" || name === "") {
-      setError("All fileds are required !");
+    
+    // * validation *//
+    const error = validatefrom(email, Password);
+    if (error) {
+      setError(error);
       return false;
     }
-    const form = new FormData();
-    form.append("email", email);
-    form.append("name", name);
 
     // * SEND REQUEST *//
-    const response = await inviteAgent(form);
-
+    const response = await inviteAgent(email, name, token);
     const status = response.status;
-
     if (status === 200) {
-      setMsg(response.data.msg);
       setEmail();
+      setMsg(response.data.msg);
+
       setTimeout(() => {
         setMsg();
       }, 2000);
@@ -58,25 +61,18 @@ const AddAgent = () => {
           <div className="flex flex-col text-center w-full mb-12">
             {error && (
               <div className="rounded border-l-4 border-red-500 bg-red-50 p-4 w-56 mb-10 ">
-                <strong className="block font-medium text-red-800  ">
-                  {error}
-                </strong>
+                <strong className="block font-medium text-red-800  ">{error}</strong>
               </div>
             )}
 
-            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 capitalize">
-              To invite New agent
-            </h1>
+            <h1 className="sm:text-3xl text-2xl font-medium title-font mb-4 text-gray-900 capitalize">To invite New agent</h1>
             <p className="lg:w-2/3 mx-auto leading-relaxed text-base">
-              As an admin, you may need to invite an agent who can start booking
-              tickets on behalf of your business
+              As an admin, you may need to invite an agent who can start booking tickets on behalf of your business
             </p>
           </div>
           <div className="flex lg:w-2/3 w-full sm:flex-row flex-col mx-auto px-8 sm:space-x-4 sm:space-y-0 space-y-4 sm:px-0 items-end">
             <div className="relative flex-grow w-full">
-              <label className="leading-7 text-sm text-gray-600">
-                Full Name
-              </label>
+              <label className="leading-7 text-sm text-gray-600">Full Name</label>
               <input
                 type="text"
                 name="name"

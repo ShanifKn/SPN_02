@@ -2,7 +2,7 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import agentModel from "../models/agentModel.js";
 import nodemailer from "nodemailer";
-import { verify } from "jsonwebtoken";
+import busModel from "../models/busModel.js";
 
 // * CODE GENERATOR *//
 const generateVerficationCode = () => {
@@ -18,7 +18,6 @@ const transporter = nodemailer.createTransport({
     pass: process.env.PASSWORD,
   },
 });
-
 
 // * INVITIATION *//
 export const inviteAgent = async (req, res) => {
@@ -67,6 +66,89 @@ export const verifyMail = async (req, res) => {
     );
     res.redirect(`${process.env.SIGNUP_URL}`);
   } catch (error) {
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+//* AGENT LIST *//
+export const agentList = async (req, res) => {
+  try {
+    const agentList = await agentModel.aggregate([
+      {
+        $match: {
+          approvalStatus: true,
+        },
+      },
+    ]);
+    res.status(200).json({ agents: agentList });
+  } catch (error) {
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+// * ADD NEW  BUS *//
+export const addBus = async (req, res) => {
+  try {
+    console.log(req.body);
+    const { start, drop, rows } = req.body;
+
+    // * seat arragement *//
+    const seats = [];
+    const columns = 6;
+    let cm = 1,
+      cw = 1,
+      ca = 1;
+
+    for (let i = 0; i < rows; i++) {
+      seats[i] = [];
+      for (let j = 0; j < columns; j++) {
+        if (j === 0 || j === columns - 1) {
+          // window seat
+          seats[i][j] = { booking: false, seatNumber: `W${cw}`, seat_type: "Window" };
+          cw++;
+        } else if (j === 1 || j === columns - 2) {
+          // middle seat
+          seats[i][j] = { booking: false, seatNumber: `M${cm}`, seat_type: "Middle" };
+          cm++;
+        } else {
+          // aisle seat
+          seats[i][j] = { booking: false, seatNumber: `A${ca}`, seat_type: "Aisle" };
+          ca++;
+        }
+      }
+    }
+
+    const newBus = new busModel({
+      start_location: start,
+      drop_location: drop,
+      seats: seats,
+    });
+    await newBus.save();
+
+    res.status(200).json({ msg: "New Bus added to list" });
+  } catch (error) {
+    res.status(500).send({ message: "Internal server error" });
+  }
+};
+
+//* ASSIGN SEATS  *//
+export const seatAsign = async (req, res) => {
+  try {
+    const { id, seats } = req.body;
+
+    const agent = await agentModel.findById(id);
+    if (!agent) return res.status(400).json({ msg: "Invalid agent" });
+
+    await agentModel.updateOne(
+      { _id: id },
+      {
+        $set: { seats: seats },
+      }
+    );
+
+    res.status(200).json({ msg: "Seats updated successfully" });
+  } catch (error) {
+    console.log(error.message);
     res.status(500).send({ message: "Internal server error" });
   }
 };

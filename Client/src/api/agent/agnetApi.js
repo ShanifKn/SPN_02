@@ -2,11 +2,14 @@ import axios from "../axiosInstance";
 
 export const agentLogin = async (email, password) => {
   try {
-  } catch (err) {}
+    const response = await axios.post("/auth/agent/login", { email, password });
+    return response;
+  } catch (err) {
+    return err.response;
+  }
 };
 
 //* AGENT REGISTERATION *//
-
 export const agentRegister = async (formData) => {
   try {
     const form = new FormData();
@@ -21,6 +24,41 @@ export const agentRegister = async (formData) => {
 
     const response = await axios.post("/auth/agent/register", form, {
       headers: { "Content-Type": "multipart/form-data" },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+};
+
+// * fetch complete bus list *//
+
+export const getBusList = async (token) => {
+  try {
+    const response = await axios.get("/agent/bus-list", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    console.log(error);
+    return error.response;
+  }
+};
+
+// * booking *//
+
+export const booking = async (id, token) => {
+  try {
+    const response = await axios.get("/agent/book-seat", {
+      params: {
+        id: id,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
     return response;
   } catch (error) {

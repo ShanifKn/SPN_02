@@ -9,6 +9,7 @@ import helmet from "helmet";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/auth.js";
 import adminRoutes from "./routes/admin.js";
+import agentRoutes from "./routes/agent.js";
 
 const app = express();
 const PORT = process.env.PORT || 6001;
@@ -24,6 +25,7 @@ app.use(cors());
 // * API ROUTES *//
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/agent", agentRoutes);
 
 // * DATABASE CONFIGURATION *//
 connectDB();

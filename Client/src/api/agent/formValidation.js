@@ -26,3 +26,25 @@ export const formValidation = (formData) => {
 
   return null;
 };
+
+export const validateFrom = (formData) => {
+  if (formData.email === "" || formData.password === "") {
+    return "All fields are required.";
+  }
+  if (!/^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)) {
+    return "Invalid email address.";
+  }
+
+  return null;
+};
+
+export const validatefrom = (email, password) => {
+  if (email === "" || password === "") {
+    return "All fields are required.";
+  }
+  if (!/^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+    return "Invalid email address.";
+  }
+
+  return null;
+};

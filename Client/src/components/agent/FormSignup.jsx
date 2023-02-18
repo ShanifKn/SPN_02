@@ -4,6 +4,7 @@ import DangerousIcon from "@mui/icons-material/Dangerous";
 import { agentLogin } from "../../api/agent/agnetApi";
 import { useDispatch } from "react-redux";
 import { setLogin } from "../../Redux/Slice/userSlice";
+import { validateFrom } from "../../api/agent/formValidation";
 
 const FormSignin = () => {
   const dispatch = useDispatch();
@@ -24,18 +25,15 @@ const FormSignin = () => {
   // * LOGIN USER *//
   const hanldeSubmit = async (event) => {
     event.preventDefault();
-    if (formData.email === "" || formData.password === "") {
-      setError("All fields are required.");
-      return false;
-    }
-    if (
-      !/^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/.test(formData.email)
-    ) {
-      setError("Invalid email address.");
+    //* validation*//
+    const error = validateFrom(formData);
+    if (error) {
+      setError(error);
       return false;
     }
 
     const response = await agentLogin(formData.email, formData.password);
+
     if (response.status === 400) {
       setError(response.data.error);
     } else if (response.status === 500) {
@@ -43,11 +41,11 @@ const FormSignin = () => {
     } else {
       dispatch(
         setLogin({
-          user: response.User.userName,
-          token: response.token,
+          user: `${response.data.Agent.firstName} ${response.data.Agent.lastName}`,
+          token: response.data.token,
         })
       );
-      navigate("/");
+      navigate("/agent/home");
     }
   };
 

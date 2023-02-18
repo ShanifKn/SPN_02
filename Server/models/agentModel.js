@@ -42,6 +42,9 @@ const agentSchema = new mongoose.Schema(
     profile: {
       type: String,
     },
+    seats: {
+      type: Number,
+    },
   },
   { timestamps: true }
 );

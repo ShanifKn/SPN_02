@@ -5,6 +5,7 @@ import PriorityHighIcon from "@mui/icons-material/PriorityHigh";
 import { login } from "../../api/admin/adminApi";
 import { useDispatch } from "react-redux";
 import { setAdminLogin } from "../../Redux/Slice/adminSlice";
+import { validateFrom } from "../../api/agent/formValidation";
 
 const FormLoginAdmin = () => {
   const [error, setError] = useState();
@@ -25,18 +26,15 @@ const FormLoginAdmin = () => {
   // * FORM SUBMIT *//
   const hanldeSubmit = async (event) => {
     event.preventDefault();
-    /* EMAIL VALIDATION */
-    if (formData.email === "" || formData.password === "") {
-      setError(" All fields are required !");
-      return false;
-    }
-    /* PASSWORD VALIDATION */
-    if (!/^\w+([\\.-]?\w+)*@\w+([\\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
-      setError("Invalid email address.");
+    //* validation*//
+    const error = validateFrom(formData);
+    if (error) {
+      setError(error);
       return false;
     }
 
     const response = await login(formData.email, formData.password);
+    console.log(response);
     if (response.status === 400) {
       setError(response.data.error);
     } else if (response.status === 500) {
@@ -44,7 +42,7 @@ const FormLoginAdmin = () => {
     } else {
       dispatch(
         setAdminLogin({
-          user: response.User.userName,
+          user: response.admin.userName,
           token: response.token,
         })
       );
@@ -62,14 +60,10 @@ const FormLoginAdmin = () => {
             </span>
 
             <div class="flex-1">
-              <strong class="block font-medium text-gray-900">
-                Changes saved
-              </strong>
+              <strong class="block font-medium text-gray-900">{error}</strong>
             </div>
 
-            <button
-              onClick={() => setError()}
-              class="text-gray-500 transition hover:text-gray-600">
+            <button onClick={() => setError()} class="text-gray-500 transition hover:text-gray-600">
               <HighlightOffIcon />
             </button>
           </div>
@@ -78,9 +72,7 @@ const FormLoginAdmin = () => {
 
       <form className="mt-8 grid grid-cols-6 gap-6" onSubmit={hanldeSubmit}>
         <div className="col-span-6">
-          <label className="block text-sm font-medium text-gray-700  ">
-            Email
-          </label>
+          <label className="block text-sm font-medium text-gray-700  ">Email</label>
 
           <input
             type="email"
@@ -92,9 +84,7 @@ const FormLoginAdmin = () => {
         </div>
 
         <div className="col-span-6">
-          <label className="block text-sm font-medium text-gray-700 ">
-            Password
-          </label>
+          <label className="block text-sm font-medium text-gray-700 ">Password</label>
           <input
             type="password"
             name="password"
@@ -112,9 +102,7 @@ const FormLoginAdmin = () => {
           <Link to="/">
             <p className="mt-4 text-sm text-gray-500 sm:mt-0 ">
               Login As Agent
-              <span className="text-gray-700 underline ml-1 hover:text-blue-500">
-                Login.
-              </span>
+              <span className="text-gray-700 underline ml-1 hover:text-blue-500">Login.</span>
             </p>
           </Link>
         </div>
