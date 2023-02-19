@@ -8,7 +8,6 @@ const connectDB = async () => {
       useNewUrlParser: true,
     });
   } catch (error) {
-    console.log(error.meassage);
     res.send(500);
   }
 };

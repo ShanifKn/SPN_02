@@ -35,7 +35,6 @@ const AgentList = () => {
 
   const handleChange = (index, event) => {
     const values = [...seats];
-    console.log();
     values[index] = event.target.value;
     setSeats(values);
   };

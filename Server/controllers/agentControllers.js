@@ -10,7 +10,6 @@ export const getBusList = async (req, res) => {
     const buses = await busModel.find();
     res.status(200).json({ buses: buses });
   } catch (error) {
-    console.log(error.message);
     res.status(500).send({ message: "Internal server error" });
   }
 };
@@ -28,7 +27,6 @@ export const getAvaiable = async (req, res) => {
 
     res.status(200).json({ agent: agent });
   } catch (error) {
-    console.log(error.message);
     res.status(500).send({ message: "Internal server error" });
   }
 };
@@ -39,9 +37,10 @@ export const getBookedSeats = async (req, res) => {
     const { id } = req.query;
     const seats = await busModel.aggregate([{ $match: { _id: mongoose.Types.ObjectId(id) } }]);
     const seat = seats[0].seats;
-    res.status(200).json({ seats: seat });
+    const bus = seats[0];
+    res.status(200).json({ seats: seat, bus: bus });
   } catch (error) {
-    console.log(error);
+    res.status(500).json({error:"Internal Server Error"})
   }
 };
 
@@ -121,7 +120,6 @@ export const addBooking = async (req, res) => {
     }
     res.status(200).json({ msg: "Booking Successful" });
   } catch (error) {
-    console.log(error);
     res.status(500).send({ message: "Internal server error" });
   }
 };

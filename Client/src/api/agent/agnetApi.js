@@ -27,7 +27,6 @@ export const agentRegister = async (formData) => {
     });
     return response;
   } catch (error) {
-    console.log(error);
     return error.response;
   }
 };
@@ -43,7 +42,6 @@ export const getBusList = async (token) => {
     });
     return response;
   } catch (error) {
-    console.log(error);
     return error.response;
   }
 };
@@ -62,7 +60,6 @@ export const booking = async (id, token) => {
     });
     return response;
   } catch (error) {
-    console.log(error);
     return error.response;
   }
 };

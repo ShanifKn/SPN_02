@@ -47,7 +47,6 @@ export const inviteAgent = async (req, res) => {
     await agent.save();
     res.status(200).json({ msg: "New invitation was created successfully" });
   } catch (error) {
-    console.log(error.message);
     res.status(500).json({ msg: error });
   }
 };
@@ -154,7 +153,6 @@ export const addBus = async (req, res) => {
 
     res.status(200).json({ msg: "New Bus added to list" });
   } catch (error) {
-    console.error(error.message);
     res.status(500).send({ message: "Internal server error" });
   }
 };
@@ -176,7 +174,6 @@ export const seatAsign = async (req, res) => {
 
     res.status(200).json({ msg: "Seats updated successfully" });
   } catch (error) {
-    console.log(error.message);
     res.status(500).send({ message: "Internal server error" });
   }
 };

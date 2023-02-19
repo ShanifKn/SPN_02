@@ -1,5 +1,6 @@
 import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AgentPage from "./pages/admin/Agent/AgentPage";
 import AddBusPage from "./pages/admin/Bus/AddBusPage";
 import HomePage from "./pages/admin/Home/HomePage";
@@ -12,20 +13,25 @@ import AgentSignup from "./pages/agnet/AgentSignup/AgentSignup";
 import ErrorPage from "./pages/Error";
 
 const App = () => {
+  const isAdmin = Boolean(useSelector((state) => state.admin.token));
+  const isAgent = Boolean(useSelector((state) => state.agent.token));
+
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/404" element={<ErrorPage />} />
+          //* ADMIN //*
           <Route path="/admin/signin" element={<AdminLogin />} />
-          <Route path="/login" element={<AgentSignin />} />
+          <Route path="/404" element={<ErrorPage />} />
+          <Route path="/" element={isAdmin ? <HomePage /> : <Navigate to="/admin/signin" />} />
+          <Route path="/admin/agent" element={isAdmin ? <AgentPage /> : <Navigate to="/admin/signin" />} />
+          //* AGENT *//
           <Route path="/register" element={<AgentSignup />} />
-          <Route path="/admin/agent" element={<AgentPage />} />
-          <Route path="/admin/add-bus" element={<AddBusPage />} />
-          <Route path="/agent/home" element={<AgentHomePage />} />
-          <Route path="/agent/booking" element={<AgentBookingPage />} />
-          <Route path="/agent/booking/view" element={<AgentBookingView />} />
+          <Route path="/login" element={<AgentSignin />} />
+          <Route path="/admin/add-bus" element={isAgent ? <AddBusPage /> : <Navigate to="/login" />} />
+          <Route path="/agent/home" element={isAgent ? <AgentHomePage /> : <Navigate to="/login" />} />
+          <Route path="/agent/booking" element={isAgent ? <AgentBookingPage /> : <Navigate to="/login" />} />
+          <Route path="/agent/booking/view" element={isAgent ? <AgentBookingView /> : <Navigate to="/login" />} />
         </Routes>
       </BrowserRouter>
     </>

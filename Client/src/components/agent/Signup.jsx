@@ -43,7 +43,6 @@ const SignUp = () => {
     }
     //* api request*//
     const response = await agentRegister(formData);
-    console.log(response);
     if (response.status === 404) {
       setError(response.data.msg);
     } else if (response.status === 200) {

@@ -19,7 +19,6 @@ export const adminLogin = async (req, res) => {
     delete admin.password;
     res.status(200).json({ token, admin });
   } catch (err) {
-    console.error(err.message);
     res.status(500).json({ error: err.message });
   }
 };
@@ -52,7 +51,6 @@ export const agentRegister = async (req, res) => {
     );
     return res.status(200).json({ msg: "New agent added" });
   } catch (err) {
-    console.log(err.message);
     res.status(500).send({ error: err.message });
   }
 };
@@ -61,28 +59,22 @@ export const agentRegister = async (req, res) => {
 
 export const agentLogin = async (req, res) => {
   try {
-    try {
-      const { email, password } = req.body;
-      console.log(req.body);
+    const { email, password } = req.body;
 
-      const agent = await agentModel.findOne({ email: email });
-      if (!agent) return res.status(400).json({ error: " Invalid email address." });
-      if (agent.approvalStatus === "false") return res.status(400).json({ error: "Still Pending for approval." });
+    const agent = await agentModel.findOne({ email: email });
+    if (!agent) return res.status(400).json({ error: " Invalid email address." });
+    if (agent.approvalStatus === "false") return res.status(400).json({ error: "Still Pending for approval." });
 
-      const isMatch = await bcrypt.compare(password, agent.password);
-      if (!isMatch) return res.status(400).json({ error: "Incorrect Password." });
-      const token = jwt.sign({ id: agent._id }, process.env.JWT_SECRET);
+    const isMatch = await bcrypt.compare(password, agent.password);
+    if (!isMatch) return res.status(400).json({ error: "Incorrect Password." });
+    const token = jwt.sign({ id: agent._id }, process.env.JWT_SECRET);
 
-      // * prevent password *//
-      let Agent = agent.toObject();
-      delete Agent.password;
+    // * prevent password *//
+    let Agent = agent.toObject();
+    delete Agent.password;
 
-      res.status(200).json({ token, Agent });
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).json({ error: err.message });
-    }
+    res.status(200).json({ token, Agent });
   } catch (err) {
-    console.log(err.message);
+    res.status(500).json({ error: err.message });
   }
 };

@@ -34,7 +34,6 @@ const FormLoginAdmin = () => {
     }
 
     const response = await login(formData.email, formData.password);
-    console.log(response);
     if (response.status === 400) {
       setError(response.data.error);
     } else if (response.status === 500) {
@@ -97,9 +96,9 @@ const FormLoginAdmin = () => {
           <button
             type="submit"
             className="inline-block shrink-0 rounded-md border border-blue-600 bg-blue-600 px-8 py-3 text-sm font-medium text-white transition hover:bg-transparent hover:text-blue-600 focus:outline-none focus:ring active:text-blue-500 dark:hover:bg-blue-700 dark:hover:text-white">
-            Create an account
+            Login
           </button>
-          <Link to="/">
+          <Link to="/login">
             <p className="mt-4 text-sm text-gray-500 sm:mt-0 ">
               Login As Agent
               <span className="text-gray-700 underline ml-1 hover:text-blue-500">Login.</span>
