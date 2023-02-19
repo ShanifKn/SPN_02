@@ -103,15 +103,42 @@ export const addBus = async (req, res) => {
       for (let j = 0; j < columns; j++) {
         if (j === 0 || j === columns - 1) {
           // window seat
-          seats[`row${i}`][j] = { id: i, booking: false, seatNumber: `W${cw}`, seat_type: "Window", passenger_name: null, age: null, gender: null };
+          seats[`row${i}`][j] = {
+            id: j,
+            booking: false,
+            seatNumber: `W${cw}`,
+            seat_type: "Window",
+            passenger_name: null,
+            age: null,
+            gender: null,
+            agent: null,
+          };
           cw++;
         } else if (j === 1 || j === columns - 2) {
           // middle seat
-          seats[`row${i}`][j] = { id: i, booking: false, seatNumber: `M${cm}`, seat_type: "Middle", passenger_name: null, age: null, gender: null };
+          seats[`row${i}`][j] = {
+            id: j,
+            booking: false,
+            seatNumber: `M${cm}`,
+            seat_type: "Middle",
+            passenger_name: null,
+            age: null,
+            gender: null,
+            agent: null,
+          };
           cm++;
         } else {
           // aisle seat
-          seats[`row${i}`][j] = { id: i, booking: false, seatNumber: `A${ca}`, seat_type: "Aisle", passenger_name: null, age: null, gender: null };
+          seats[`row${i}`][j] = {
+            id: j,
+            booking: false,
+            seatNumber: `A${ca}`,
+            seat_type: "Aisle",
+            passenger_name: null,
+            age: null,
+            gender: null,
+            agent: null,
+          };
           ca++;
         }
       }

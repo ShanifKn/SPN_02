@@ -99,3 +99,21 @@ export const addBooking = async (passenges, id, token) => {
     return error.response;
   }
 };
+
+//* BOOKED SEATS *//
+
+export const getBookedSeats = async (id, token) => {
+  try {
+    const response = await axios.get("/agent/booked-seats", {
+      params: {
+        id,
+      },
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

@@ -6,6 +6,7 @@ import { addBooking, getAvaSeats } from "../../api/agent/agnetApi";
 const Booking = () => {
   const [passengers, setPassengers] = useState([{ name: "", sex: "", age: "" }]);
   const [agent, setAgent] = useState([]);
+  const [error, setError] = useState();
   const token = useSelector((state) => state.agent.token);
   const navigate = useNavigate();
   const location = useLocation();
@@ -31,9 +32,14 @@ const Booking = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const response = await addBooking(passengers, id, token);
-    const stauts = response.status;
-
-    console.log(stauts);
+    const status = response.status;
+    if (status === 30) {
+      setError(response.data.msg);
+    } else if (status === 500) {
+      navigate("/404");
+    } else {
+      navigate("/agent/home");
+    }
   };
 
   useEffect(() => {
@@ -44,6 +50,7 @@ const Booking = () => {
         setAgent(response.data.agent);
       } else {
         navigate("/404");
+        2;
       }
     };
     fetchSeats();
@@ -51,6 +58,11 @@ const Booking = () => {
 
   return (
     <>
+      {error && (
+        <div className="rounded border-l-4 ml-56 mt-5 border-red-500 bg-red-50 p-4 w-56 mb-10 ">
+          <strong className="block font-medium text-red-800  ">{error}</strong>
+        </div>
+      )}
       {agent.seats > 0 ? (
         <section className="text-gray-600 body-font relative">
           <form onSubmit={handleSubmit}>

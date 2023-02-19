@@ -21,11 +21,13 @@ const Home = () => {
     fetchBus();
   }, []);
 
-
   const handleBooking = (id) => {
     navigate("/agent/booking", { state: { id: id } });
   };
 
+  const handleBookingView = (id) => {
+    navigate("/agent/booking/view", { state: { id: id } });
+  };
   return (
     <>
       <section className="text-gray-600 body-font">
@@ -51,7 +53,13 @@ const Home = () => {
                     <tr key={index}>
                       <td className="px-4 py-3">{bus.start_location}</td>
                       <td className="px-4 py-3">{bus.drop_location}</td>
-                      <td className="w-10 text-center">
+                      <td className="text-center flex gap-4 mt-2 mb-2">
+                        <button
+                          type="button"
+                          onClick={() => handleBookingView(bus._id)}
+                          className="px-8 py-2 font-semibold rounded bg-gray-600 text-black">
+                          view
+                        </button>
                         <button
                           type="button"
                           onClick={() => handleBooking(bus._id)}

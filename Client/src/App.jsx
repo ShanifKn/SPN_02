@@ -5,6 +5,7 @@ import AddBusPage from "./pages/admin/Bus/AddBusPage";
 import HomePage from "./pages/admin/Home/HomePage";
 import AdminLogin from "./pages/admin/Login/AdminLogin";
 import AgentBookingPage from "./pages/agnet/AgentBooking/AgentBookingPage";
+import AgentBookingView from "./pages/agnet/AgentBookingView.jsx/AgentBookingView";
 import AgentHomePage from "./pages/agnet/AgentHome/AgentHomePage";
 import { AgentSignin } from "./pages/agnet/AgentSignin/AgentSignin";
 import AgentSignup from "./pages/agnet/AgentSignup/AgentSignup";
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/admin/add-bus" element={<AddBusPage />} />
           <Route path="/agent/home" element={<AgentHomePage />} />
           <Route path="/agent/booking" element={<AgentBookingPage />} />
+          <Route path="/agent/booking/view" element={<AgentBookingView />} />
         </Routes>
       </BrowserRouter>
     </>
