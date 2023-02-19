@@ -9,9 +9,10 @@ const busSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  seats: {
-    type: Array,
+  row: {
+    type: Number,
   },
+  seats: {},
 });
 
 const busModel = mongoose.model("Bus", busSchema);

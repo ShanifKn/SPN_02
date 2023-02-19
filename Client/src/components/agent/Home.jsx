@@ -6,7 +6,6 @@ import { getBusList } from "../../api/agent/agnetApi";
 const Home = () => {
   const token = useSelector((state) => state.agent.token);
   const [buses, setBuses] = useState([]);
-  const [agent, setAgent] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -21,6 +20,7 @@ const Home = () => {
     };
     fetchBus();
   }, []);
+
 
   const handleBooking = (id) => {
     navigate("/agent/booking", { state: { id: id } });

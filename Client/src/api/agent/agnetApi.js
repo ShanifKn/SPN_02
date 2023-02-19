@@ -66,3 +66,36 @@ export const booking = async (id, token) => {
     return error.response;
   }
 };
+
+//*   get Avaiable seats      *//
+export const getAvaSeats = async (token) => {
+  try {
+    const response = await axios.get("/agent/seats", {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};
+
+//*  ADD BOOKING *//
+
+export const addBooking = async (passenges, id, token) => {
+  try {
+    const response = await axios.post(
+      "/agent/booking",
+      { passenger: passenges, id: id },
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
+    return response;
+  } catch (error) {
+    return error.response;
+  }
+};

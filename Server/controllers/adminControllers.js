@@ -39,7 +39,7 @@ export const inviteAgent = async (req, res) => {
     };
     await transporter.sendMail(mailOptions);
 
-    //* CREATEING NEW USER *//
+    /* CREATEING NEW USER */
     const agent = new agentModel({
       email,
       verficationCode: generateCode,
@@ -89,30 +89,29 @@ export const agentList = async (req, res) => {
 // * ADD NEW  BUS *//
 export const addBus = async (req, res) => {
   try {
-    console.log(req.body);
     const { start, drop, rows } = req.body;
 
     // * seat arragement *//
-    const seats = [];
+    const seats = {};
     const columns = 6;
     let cm = 1,
       cw = 1,
       ca = 1;
 
     for (let i = 0; i < rows; i++) {
-      seats[i] = [];
+      seats[`row${i}`] = [];
       for (let j = 0; j < columns; j++) {
         if (j === 0 || j === columns - 1) {
           // window seat
-          seats[i][j] = { booking: false, seatNumber: `W${cw}`, seat_type: "Window" };
+          seats[`row${i}`][j] = { id: i, booking: false, seatNumber: `W${cw}`, seat_type: "Window", passenger_name: null, age: null, gender: null };
           cw++;
         } else if (j === 1 || j === columns - 2) {
           // middle seat
-          seats[i][j] = { booking: false, seatNumber: `M${cm}`, seat_type: "Middle" };
+          seats[`row${i}`][j] = { id: i, booking: false, seatNumber: `M${cm}`, seat_type: "Middle", passenger_name: null, age: null, gender: null };
           cm++;
         } else {
           // aisle seat
-          seats[i][j] = { booking: false, seatNumber: `A${ca}`, seat_type: "Aisle" };
+          seats[`row${i}`][j] = { id: i, booking: false, seatNumber: `A${ca}`, seat_type: "Aisle", passenger_name: null, age: null, gender: null };
           ca++;
         }
       }
@@ -121,12 +120,14 @@ export const addBus = async (req, res) => {
     const newBus = new busModel({
       start_location: start,
       drop_location: drop,
+      row: rows,
       seats: seats,
     });
     await newBus.save();
 
     res.status(200).json({ msg: "New Bus added to list" });
   } catch (error) {
+    console.error(error.message);
     res.status(500).send({ message: "Internal server error" });
   }
 };
