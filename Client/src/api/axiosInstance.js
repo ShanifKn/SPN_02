@@ -1,7 +1,7 @@
 import Axios from "axios";
 
 const axios = Axios.create({
-  baseURL: import.meta.env.VITE_HOST,
+  baseURL: "http://commercefox.ml/api/",
   headers: {
     "Content-Type": "application/json",
   },
