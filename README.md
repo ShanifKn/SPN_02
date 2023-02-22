@@ -50,6 +50,9 @@ Run the server and client in development mode
     password: 123456
 
 # EMAIL VERIFICATION
+
+  Ethereal is a fake SMTP service,you can receive invitation mail on ethereal inbox.
+
     SITE :https://ethereal.email/
     EMAIL: dawn.christiansen33@ethereal.email
     PASS: ZF8eRaG5pHHTyVZr5b
