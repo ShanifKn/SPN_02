@@ -13,10 +13,12 @@ import storage from "redux-persist/lib/storage";
 import { adminSlice } from "./Slice/adminSlice";
 import { agentSlice } from "./Slice/userSlice";
 
-const persistConfig = { key: "root", storage, version: 1 };
+const persistConfig = { key: "user", storage, version: 1 };
+const AdminPersistConfig = { key: "admin", storage, version: 1 };
+
 
 const agentPersistedReducer = persistReducer(persistConfig, agentSlice.reducer);
-const adminPersistedReducer = persistReducer(persistConfig, adminSlice.reducer);
+const adminPersistedReducer = persistReducer(AdminPersistConfig, adminSlice.reducer);
 
 export const store = configureStore({
   reducer: {
